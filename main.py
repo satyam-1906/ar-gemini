@@ -165,8 +165,17 @@ def videoFeed(img, present):
         let_click3 = False
     cv2.putText(flip, text, (23, 125), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,255,255), 1)
     if result != '':
-        for i in range(0, len(result)-50, 50):
-            cv2.putText(flip, result[i:i+50], (20, 145+20*i//50), cv2.FONT_HERSHEY_COMPLEX, (5*50/len(result)), (255,255,255), 1)
+        if len(result) <= 300:
+            size = 0.5
+            l = 50
+        elif len(result) > 300 and len(result) <= 700:
+            size = 0.4
+            l = 75
+        elif len(result) >= 700:
+            size = 0.3
+            l = 100
+        for i in range(0, len(result)-l, l):
+            cv2.putText(flip, result[i:i+l], (20, 145+20*i//l), cv2.FONT_HERSHEY_COMPLEX, size, (255,255,255), 1)
     cv2.imshow('Live Video Feed', flip)
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
