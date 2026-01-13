@@ -28,8 +28,10 @@ result = ''
 res = ''
 c1 = 0
 r = []
+with open('apikey.txt','r') as file:
+    content = file.read()
 try:
-    client = genai.Client(api_key='AIzaSyBtc8aladCUnIJGplF5AqIh2_qyWUdChDc')
+    client = genai.Client(api_key=content)
 except Exception as e:
     print(f"Error initializing client: {e}")
     print("Please ensure the GEMINI_API_KEY environment variable is set.")
@@ -107,7 +109,7 @@ def print_result(result, output_image, timestamp_ms):
     videoFeed(output_image, present)
 
 def videoFeed(img, present):
-    global c, x_coord1, y_coord1, z_coord1, nums, let_click1, x_coord2, y_coord2, z_coord2, hand1, hand2, let_click2, text, let_click3, result, res, c1, r, model_name
+    global c, x_coord1, y_coord1, z_coord1, nums, let_click1, x_coord2, y_coord2, z_coord2, hand1, hand2, let_click2, text, let_click3, result, res, c1, model_name
     n_frame = img.numpy_view()
     new_frame = np.copy(n_frame)
     new_frame = cv2.cvtColor(new_frame, cv2.COLOR_RGB2BGR)
@@ -164,7 +166,7 @@ def videoFeed(img, present):
     cv2.putText(flip, text, (23, 125), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,255,255), 1)
     if result != '':
         for i in range(0, len(result)-50, 50):
-            cv2.putText(flip, result[i:i+50], (20, 145+20*(i//50)), cv2.FONT_HERSHEY_COMPLEX, 0.35, (255,255,255), 1)
+            cv2.putText(flip, result[i:i+50], (20, 145+20*i//50), cv2.FONT_HERSHEY_COMPLEX, (5*50/len(result)), (255,255,255), 1)
     cv2.imshow('Live Video Feed', flip)
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
