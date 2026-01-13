@@ -142,7 +142,7 @@ def videoFeed(img, present):
     cv2.rectangle(flip, (20, 110), (200, 130), (255, 255, 255), 1)
     if distance2 > 0.1:
         let_click1 = True
-    if distance2 <= 0.05 and let_click1:
+    if distance2 <= 0.05 and let_click1 and x_coord2[4] > 0.1 and x_coord2[4] < 0.9 and y_coord2[4] > 0.1 and y_coord2[4] < 0.9 and y_coord2[8] > 0.1 and y_coord2[8] < 0.9 and y_coord2[8] > 0.1 and y_coord2[8] < 0.9:
         if c < 2:
             c += 1
         else:
@@ -150,7 +150,7 @@ def videoFeed(img, present):
         let_click1 = False
     if distance1 > 0.1:
         let_click2 = True
-    if distance1 <= 0.05 and let_click2:
+    if distance1 <= 0.05 and let_click2 and x_coord1[4] > 0.1 and x_coord1[4] < 0.9 and y_coord1[4] > 0.1 and y_coord1[4] < 0.9 and y_coord1[8] > 0.1 and y_coord1[8] < 0.9 and y_coord1[8] > 0.1 and y_coord1[8] < 0.9:
         text = text + num
         let_click2 = False
     if distance3 > 0.1:
