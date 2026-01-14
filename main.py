@@ -22,6 +22,8 @@ nums = ['ABCDEFGHIJKLMNOPQRSTUVWXYZ', '0123456789', '!@#$%^&*()[];:"<>?/,.']
 let_click1 = True
 let_click2 = False
 let_click3 = False
+let_click4 = False
+let_click5 = False
 c = 0
 text = ''
 result = ''
@@ -109,23 +111,29 @@ def print_result(result, output_image, timestamp_ms):
     videoFeed(output_image, present)
 
 def videoFeed(img, present):
-    global c, x_coord1, y_coord1, z_coord1, nums, let_click1, x_coord2, y_coord2, z_coord2, hand1, hand2, let_click2, text, let_click3, result, res, c1, model_name
+    global c, x_coord1, y_coord1, z_coord1, nums, let_click1, x_coord2, y_coord2, z_coord2, hand1, hand2, let_click2, text, let_click3, result, res, c1, model_name, let_click4, let_click5
     n_frame = img.numpy_view()
     new_frame = np.copy(n_frame)
     new_frame = cv2.cvtColor(new_frame, cv2.COLOR_RGB2BGR)
     distance1 = ((x_coord1[4]-x_coord1[8])**2 + (y_coord1[4]-y_coord1[8])**2 + (z_coord1[4]-z_coord1[8])**2)**0.5
     distance2 = ((x_coord2[4]-x_coord2[8])**2 + (y_coord2[4]-y_coord2[8])**2 + (z_coord2[4]-z_coord2[8])**2)**0.5
     distance3 = ((x_coord1[4]-x_coord1[12])**2 + (y_coord1[4]-y_coord1[12])**2 + (z_coord1[4]-z_coord1[12])**2)**0.5
+    distance4 = ((x_coord2[4]-x_coord2[12])**2 + (y_coord2[4]-y_coord2[12])**2 + (z_coord2[4]-z_coord2[12])**2)**0.5
+    distance5 = ((x_coord1[4]-x_coord1[16])**2 + (y_coord1[4]-y_coord1[16])**2 + (z_coord1[4]-z_coord1[16])**2)**0.5
     if present and hand1 == 1:
         cv2.circle(new_frame, (int(x_coord1[4]*new_frame.shape[1]), int(y_coord1[4]*new_frame.shape[0])), 5, (255, 255, 255), -1)
         cv2.circle(new_frame, (int(x_coord1[8]*new_frame.shape[1]), int(y_coord1[8]*new_frame.shape[0])), 5, (255, 255, 255), -1)
         cv2.line(new_frame, (int(x_coord1[4]*new_frame.shape[1]), int(y_coord1[4]*new_frame.shape[0])), (int(x_coord1[8]*new_frame.shape[1]), int(y_coord1[8]*new_frame.shape[0])), (255, 255, 255), 2)
         cv2.circle(new_frame, (int(x_coord1[12]*new_frame.shape[1]), int(y_coord1[12]*new_frame.shape[0])), 5, (255, 255, 255), -1)
         cv2.line(new_frame, (int(x_coord1[4]*new_frame.shape[1]), int(y_coord1[4]*new_frame.shape[0])), (int(x_coord1[12]*new_frame.shape[1]), int(y_coord1[12]*new_frame.shape[0])), (255, 255, 255), 2)
+        cv2.circle(new_frame, (int(x_coord1[16]*new_frame.shape[1]), int(y_coord1[16]*new_frame.shape[0])), 5, (255, 255, 255), -1)
+        cv2.line(new_frame, (int(x_coord1[4]*new_frame.shape[1]), int(y_coord1[4]*new_frame.shape[0])), (int(x_coord1[16]*new_frame.shape[1]), int(y_coord1[16]*new_frame.shape[0])), (255, 255, 255), 2)
     if present and hand2 == 1:
         cv2.circle(new_frame, (int(x_coord2[4]*new_frame.shape[1]), int(y_coord2[4]*new_frame.shape[0])), 5, (255, 255, 255), -1)
         cv2.circle(new_frame, (int(x_coord2[8]*new_frame.shape[1]), int(y_coord2[8]*new_frame.shape[0])), 5, (255, 255, 255), -1)
         cv2.line(new_frame, (int(x_coord2[4]*new_frame.shape[1]), int(y_coord2[4]*new_frame.shape[0])), (int(x_coord2[8]*new_frame.shape[1]), int(y_coord2[8]*new_frame.shape[0])), (255, 255, 255), 2)
+        cv2.circle(new_frame, (int(x_coord2[12]*new_frame.shape[1]), int(y_coord2[12]*new_frame.shape[0])), 5, (255, 255, 255), -1)
+        cv2.line(new_frame, (int(x_coord2[4]*new_frame.shape[1]), int(y_coord2[4]*new_frame.shape[0])), (int(x_coord2[12]*new_frame.shape[1]), int(y_coord2[12]*new_frame.shape[0])), (255, 255, 255), 2)
     flip = cv2.flip(new_frame, 1)
     cv2.putText(flip, f'Distance(Change) : {distance2:.3f}', (20, 20), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,255,255), 1)
     cv2.putText(flip, f'Distance(Click) : {distance1:.3f}', (20, 40), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,255,255), 1)
@@ -154,8 +162,18 @@ def videoFeed(img, present):
         text = text + num
         let_click2 = False
     if distance3 > 0.1:
+        let_click4 = True
+    if distance3 <= 0.05 and let_click4 and x_coord1[4] > 0.1 and x_coord1[4] < 0.9 and y_coord1[4] > 0.1 and y_coord1[4] < 0.9 and y_coord1[12] > 0.1 and y_coord1[12] < 0.9 and y_coord1[12] > 0.1 and y_coord1[12] < 0.9:
+        text = text[:len(text)-1]
+        let_click4 = False
+    if distance5 > 0.1:
+        let_click5 = True
+    if distance5 <= 0.05 and let_click5 and x_coord1[4] > 0.1 and x_coord1[4] < 0.9 and y_coord1[4] > 0.1 and y_coord1[4] < 0.9 and y_coord1[16] > 0.1 and y_coord1[16] < 0.9 and y_coord1[16] > 0.1 and y_coord1[16] < 0.9:
+        text = text + ' '
+        let_click5 = False
+    if distance4 > 0.1:
         let_click3 = True
-    if distance3 <= 0.05 and let_click3 and x_coord1[4] > 0.1 and x_coord1[4] < 0.9 and y_coord1[4] > 0.1 and y_coord1[4] < 0.9 and y_coord1[12] > 0.1 and y_coord1[12] < 0.9 and y_coord1[12] > 0.1 and y_coord1[12] < 0.9:
+    if distance4 <= 0.05 and let_click3 and x_coord2[4] > 0.1 and x_coord2[4] < 0.9 and y_coord2[4] > 0.1 and y_coord2[4] < 0.9 and y_coord2[12] > 0.1 and y_coord2[12] < 0.9 and y_coord2[12] > 0.1 and y_coord2[12] < 0.9:
         try:
             response = client.models.generate_content(model=model_name, contents=text)
             text = ''
