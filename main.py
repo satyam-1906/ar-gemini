@@ -165,15 +165,15 @@ def videoFeed(img, present):
         let_click3 = False
     cv2.putText(flip, text, (23, 125), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,255,255), 1)
     if result != '':
-        if len(result) <= 300:
+        if len(result) <= 400:
             size = 0.5
             l = 50
-        elif len(result) > 300 and len(result) <= 700:
+        elif len(result) > 400 and len(result) <= 800:
             size = 0.4
-            l = 75
-        elif len(result) >= 700:
+            l = 60
+        elif len(result) >= 800:
             size = 0.3
-            l = 100
+            l = 70
         for i in range(0, len(result)-l, l):
             cv2.putText(flip, result[i:i+l], (20, 145+20*i//l), cv2.FONT_HERSHEY_COMPLEX, size, (255,255,255), 1)
     cv2.imshow('Live Video Feed', flip)
