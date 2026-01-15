@@ -178,7 +178,7 @@ def videoFeed(img, present):
         let_click3 = True
     if distance4 <= 0.05 and let_click3 and x_coord2[4] > 0.1 and x_coord2[4] < 0.9 and y_coord2[4] > 0.1 and y_coord2[4] < 0.9 and y_coord2[12] > 0.1 and y_coord2[12] < 0.9 and y_coord2[12] > 0.1 and y_coord2[12] < 0.9:
         try:
-            response = client.models.generate_content(model=model_name, contents=(text+'keep your answer within 800 words'))
+            response = client.models.generate_content(model=model_name, contents=(text))
             text = ''
             result = response.text
         except Exception as e:
