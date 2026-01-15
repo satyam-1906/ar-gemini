@@ -145,7 +145,10 @@ def videoFeed(img, present):
     else:
         angle = 0
     cv2.putText(flip, f'Angle : {angle:.3f}', (20, 80), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255,255,255), 1)
-    num = nums[c][int((angle/180)*len(nums[c]))]
+    if hand2 == 1:
+        num = nums[c][int((angle/180)*len(nums[c]))]
+    else:
+        num = None
     cv2.putText(flip, f'Character : {num}', (20, 100), cv2.FONT_HERSHEY_COMPLEX, 0.5, (255, 255, 255), 1)
     cv2.rectangle(flip, (20, 110), (200, 130), (255, 255, 255), 1)
     if distance2 > 0.1:
@@ -175,7 +178,7 @@ def videoFeed(img, present):
         let_click3 = True
     if distance4 <= 0.05 and let_click3 and x_coord2[4] > 0.1 and x_coord2[4] < 0.9 and y_coord2[4] > 0.1 and y_coord2[4] < 0.9 and y_coord2[12] > 0.1 and y_coord2[12] < 0.9 and y_coord2[12] > 0.1 and y_coord2[12] < 0.9:
         try:
-            response = client.models.generate_content(model=model_name, contents=text)
+            response = client.models.generate_content(model=model_name, contents=(text+'keep your answer within 800 words'))
             text = ''
             result = response.text
         except Exception as e:
