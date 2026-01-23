@@ -191,4 +191,4 @@ Example:
 
 If you have suggestions or want to collaborate, feel free to connect with me on LinkedIn!
 
-**Author:** Satyam Saman
+**Author:** Satyam Samal
